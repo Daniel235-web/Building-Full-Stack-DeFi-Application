@@ -1,0 +1,27 @@
+contract
+const contract = await ethers.getContractAt("SimpleDeFiToken", "0x5FAeDf3017Ba71Cd5A5A5352dc008685ff5825dc")
+contract.address
+const contract = await ethers.getContractAt("SimpleDeFiToken", "0x5FAeDf3017Ba71Cd5A5A5352dc008685ff5825dc")
+contract
+await contract.symbol()
+contract.address
+contract
+const contract = await ethers.getContractAt("SimpleDeFiToken", "0x48C41871810824a4201717A843c9E1B124Eaf5E6")
+cost contract = await ethers.getContractAt("SimpleDeFiToken","0x48C41871810824a4201717A843c9E1B124Eaf5E6")
+contract
+const contract = await ethers.getContractAt("SimpleDeFiToken", "0x5FAeDf3017Ba71Cd5A5A5352dc008685ff5825d")
+contract
+await contract.symbol
+clear
+await contract.symbol()
+await contract.symbol
+await contract.name()
+contract.address
+contract = await ethers.getContractAt("SimpleDeFiToken", "0x5FAeDf3017Ba71Cd5A5A5352dc008685ff5825dc")
+contract
+const contract = await ethers.getContractAt("SimpleDeFiToken","0x5FAeDf3017Ba71Cd5A5A5352dc008685ff5825dc")
+const contract = await ethers.gtContractAT("SimpleDeFiToken", "0x5FAeDf3017Ba71Cd5A5A5352dc008685ff5825dc")
+contract
+const contract = await ethers.getContractAt("SimpleDeFiToken", " 0x00f7A0af740ea508F4428d61da69B98d086dCcbE")
+contract
+const contract = await ethers.getContractAt("SimpleDeFiToken", "  0x640F6D9894Cd7b143C22c9e23950cdb8AA7B706D")
