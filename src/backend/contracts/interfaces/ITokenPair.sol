@@ -48,5 +48,5 @@ interface ITokenPair {
 
     function sync() external;
 
-    function intialize(address, address) external;
+    function initialize(address, address) external;
 }
