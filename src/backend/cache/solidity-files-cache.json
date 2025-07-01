@@ -225,6 +225,343 @@
       "artifacts": [
         "IERC20Metadata"
       ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/PairFactory.sol": {
+      "lastModificationDate": 1751397013331,
+      "contentHash": "3ebb3cb5422a10742e6749f8c320a196",
+      "sourceName": "src/backend/contracts/PairFactory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./interfaces/IPairFactory.sol",
+        "./libraries/Helper.sol",
+        "./TokenPair.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PairFactory"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/interfaces/IPairFactory.sol": {
+      "lastModificationDate": 1751396980605,
+      "contentHash": "1adeb44ba97e449c52a6a48d2988bdda",
+      "sourceName": "src/backend/contracts/interfaces/IPairFactory.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPairFactory"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/libraries/Helper.sol": {
+      "lastModificationDate": 1751397175515,
+      "contentHash": "709ead67aa0b3581b2f8d7ff8bfd2d8a",
+      "sourceName": "src/backend/contracts/libraries/Helper.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Helper"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/TokenPair.sol": {
+      "lastModificationDate": 1751119236345,
+      "contentHash": "53918c2d7f4c6f90986b743fd76f990c",
+      "sourceName": "src/backend/contracts/TokenPair.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/utils/math/Math.sol",
+        "./interfaces/ITokenPair.sol",
+        "./interfaces/IPairFactory.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TokenPair"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1749067326319,
+      "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/interfaces/ITokenPair.sol": {
+      "lastModificationDate": 1751119220534,
+      "contentHash": "133902f326b8e5a0442f919b73897d29",
+      "sourceName": "src/backend/contracts/interfaces/ITokenPair.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ITokenPair"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+      "lastModificationDate": 1749067326569,
+      "contentHash": "1535f8c0c68463f8c1b5239f7584e71f",
+      "sourceName": "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ReentrancyGuard"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
+      "lastModificationDate": 1749067326309,
+      "contentHash": "fe63409d8a06818b926cf89e0ea88b1b",
+      "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Math"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/interfaces/IAMMRouter.sol": {
+      "lastModificationDate": 1750835320759,
+      "contentHash": "fa256d867574ee8bf8d1f89330566633",
+      "sourceName": "src/backend/contracts/interfaces/IAMMRouter.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAMMRouter"
+      ]
     }
   }
 }
