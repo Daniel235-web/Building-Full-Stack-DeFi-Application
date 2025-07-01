@@ -4,11 +4,10 @@ pragma solidity ^0.8.0;
 // Helper methods for the DEX
 library Helper {
     // Returns sorted token address
-    function sortTokens(address tokenA, address tokenB)
-        internal
-        pure
-        returns (address _tokenA, address _tokenB)
-    {
+    function sortTokens(
+        address tokenA,
+        address tokenB
+    ) internal pure returns (address _tokenA, address _tokenB) {
         require(tokenA != tokenB, "IDENTICAL_ADDRESSES_NOT_ALLOWED");
         (_tokenA, _tokenB) = tokenA < tokenB
             ? (tokenA, tokenB)
