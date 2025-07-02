@@ -562,6 +562,44 @@
       "artifacts": [
         "IAMMRouter"
       ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/MemeToken.sol": {
+      "lastModificationDate": 1751460249434,
+      "contentHash": "3f90aad130e76c9e3c54c304d6d580e7",
+      "sourceName": "src/backend/contracts/MemeToken.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MemeToken"
+      ]
     }
   }
 }
