@@ -31,7 +31,7 @@ contract AMMRouter  is IAMMRouter {
         (reserveA, reserveB) = tokenA ==_tokenA ? (_reserveA, _reserveB) : (_reserveB, _reserveA);
     }
 //perform getAmount calculations along the pair in the path
-function getAmountOut(uint256 amountIn, address[] memory path) public view returns (uint256[] memory amounts){
+function getAmountsOut(uint256 amountIn, address[] memory path) public view returns (uint256[] memory amounts){
     require (path.length >=2, "INVALID_PATH");
     amounts = new uint256[](path.length);
     amounts[0] = amountIn;
@@ -43,4 +43,16 @@ function getAmountOut(uint256 amountIn, address[] memory path) public view retur
         amounts[i + 1 ] = Helper.getAmountOut(amounts[i], reserveIn, reserveOut);
     }
 }
+//perform getAmountIn calcutlations  from the pair in the end of the path
+function getAmountsIn(uint256 amountOut, address[] memory path) public view returns(uint256[] memory amounts){
+    require(path.length >= 2 , "INVALID_PATH");
+    amounts = new uint256[](path.length);
+    amounts[amounts.length - 1] =  amountOut;
+    for (uint256 i = path.length - 1; i > 0; i--) {
+        (uint256 reserveIn, uint256 reserveOut, ) = getReserves(path[i - 1], path[i]);
+        amounts[i - 1] = Helper.getAmountIn(amounts[i], reserveIn, reserveOut);
+
+    }
+}
+
 }
