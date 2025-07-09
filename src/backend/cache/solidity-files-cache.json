@@ -600,6 +600,47 @@
       "artifacts": [
         "MemeToken"
       ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/AMMRouter.sol": {
+      "lastModificationDate": 1751984205388,
+      "contentHash": "77d6601eef279ef703dfee241cb59a7e",
+      "sourceName": "src/backend/contracts/AMMRouter.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPairFactory.sol",
+        "./interfaces/IAMMRouter.sol",
+        "./libraries/Helper.sol",
+        "./interfaces/ITokenPair.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AMMRouter"
+      ]
     }
   }
 }
