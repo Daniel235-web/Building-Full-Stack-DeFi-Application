@@ -6,16 +6,21 @@ async function main() {
     // "Contract Name ", "Contract Factory Name"
     ["Simple DeFi Token", "SimpleDeFiToken"],
     ["Meme Token", "MemeToken"],
-    ["Pair Factory", "PairFactory"]
+    ["Pair Factory", "PairFactory"],
+    ["AMM Router", "AMMRouter"],//note that factory must come after the pair factory because of the forloop below 
 
   ];
+  let pairFactoryAddress;
 
   //Deploying the smart contracts and safe  the contract to frontend
  
   for (const [name, factory] of contractList) {
     let contractFactory = await ethers.getContractFactory(factory);
-    let contract = await contractFactory.deploy()
+    let contract = factory === "AMMRouter" ? await contractFactory.deploy(pairFactoryAddress) : await contractFactory.deploy();
     console.log(`${name} Contract Address:`, contract.address);
+    if (factory === "PairFactory") {
+      pairFactoryAddress = contract.address;
+    }
     saveContractToFrontend(contract, factory);
   }
 
