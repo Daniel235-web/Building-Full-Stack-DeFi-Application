@@ -7,6 +7,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import TokenOperations from './features/TokenOperations';
 import {Web3ReactProvider} from  '@web3-react/core'
 import {getLibrary } from './components/wallet';
+import LiquidityRouter from './features/Liquidity/LiquidityRouter';
 
 function App(){
     return <Web3ReactProvider getLibrary={getLibrary}>
@@ -17,6 +18,7 @@ function App(){
         <Layout>
             <Routes>
                 <Route path="/" element={<TokenOperations/>}>
+                <Route path="/liquidity/*" element={<LiquidityRouter />}/>
 
                 </Route>
             </Routes>
