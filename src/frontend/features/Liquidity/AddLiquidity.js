@@ -5,6 +5,11 @@ import { useWeb3React } from "@web3-react/core";
 import { getTokenInfo, getErrorMessage, toString } from "../../utils/Helpers";
 import { Grid, Typography, useTheme, Button, TextField, Divider } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownIcon";
+import { toast } from "react-toastify";
+import AMMRouterAddress from "../../contracts/AMMRouter-address.json";
+import AMMRouterABI from "../../contracts/AMMRouter.json";
+import ERC20ABI from "../../utils/ERC20ABI";
+import { ethers } from "hardhat";
 
 const AddLiquidity = () => {
   theme = useTheme();
@@ -26,6 +31,9 @@ const AddLiquidity = () => {
   const [allowB, setAllowB] = useState(false);
   const [allowAmountA, setAllowAmountA] = useState(0);
   const [allowAmountB, setAllowAmountB] = useState(0);
+  const [indexTokenA, indexTokenB] = [0, 1];
+  const [pair, setPair] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const setTokenInfo = useCallback(
     async (pairAddress) => {
@@ -48,12 +56,85 @@ const AddLiquidity = () => {
     [library, tokensSelected]
   );
 
-  useEffect(() => {
-    const pairAddress = searchParams.get("pair");
-    if (active && pairAddress) {
-      setTokenInfo(pairAddress);
+  const getReserves = useCallback(async () => {
+    if (!tokensSelected) {
+      return;
     }
-  }, []);
+    try {
+      const ammRouter = new ethers.Contract(AMMRouterAddress.address, AMMRouterABI.abi, library.getSigners());
+      const [_reserveA, _reserveB, _pairAddress] = await ammRouter.getReserves(
+        tokenA.address,
+        tokenB.address
+      );
+      setPair(_pairAddress);
+      setReserveA(ethers.utils.formatUnits(_reserveA, tokenA.decimals));
+      setReserveB(ethers.utils.formatUnits(_reserveB, tokenB.decimals));
+    } catch (error) {
+      toast.info("Looks like you are the first one to provide liquidity for the pair.", {
+        toastId: "RESERVE_0",
+      });
+      setPair("");
+    }
+  }, [library, tokenA, tokenB, tokensSelected]);
+
+  const getBalances = useCallback(async () => {
+    if (!tokensSelected) {
+      return;
+    }
+    try {
+      const _tokenA = new ethers.Contract(tokenA.address, ERC20ABI, library.getSigners());
+      const _balanceA = await _tokenA.balanceOf(account);
+      setBalanceA(Number(ethers.utils.formatUnits(_balanceA, tokenA.decimals)));
+      const _tokenB = new ethers.Contract(tokenB.address, ERC20ABI, library.getSigners());
+      const _balanceB = await _tokenB.balanceOf(account);
+      setBalanceB(Number(ethers.utils.formatUnits(_balanceB, tokenB.decimals)));
+    } catch (error) {}
+  });
+
+  const checkAllowances = useCallback(async () => {
+    if (!tokensSelected) {
+      return;
+    }
+    try {
+      const _tokenA = new ethers.Contract(tokenA.address, ERC20ABI, library.getSigners());
+      let _allowA = await _tokenA.allowance(account, AMMRouterAddress.address);
+      _allowA = Number(ethers.utils.formatUnits(_allowA, tokenA.decimals));
+      setAllowAmountA(_allowA);
+      setAllowA(_allowA >= amountA);
+      const _tokenB = new ethers.Contract(tokenB.address, ERC20ABI, library.getSigners());
+      let _allowB = await _tokenB.allowance(account, AMMRouterAddress.address);
+      _allowB = Number(ethers.utils.formatUnits(_allowB, tokenB.decimals));
+      setAllowAmountB(_allowB);
+      setAllowB(_allowB >= amountB);
+    } catch (error) {
+      toast.error(getErrorMessage(error, "cannot check allowances!"));
+      console.error(error);
+    }
+  }, [account, library, tokenA, tokenB, amountA, amountB, tokensSelected]);
+
+  const handleApprove = async (index) => {
+    setLoading(true);
+    const [token, amount] = index === indexTokenA ? [tokenA, amountA] :[tokenB, amountB];
+    try {
+        const tokenContract = new ethers.Contract(token.address, ERC20ABI, library.getSigners());
+        const allowAmount =   ethers.utils.parseUnits(toString(amount), token.decimals);
+        const tx = await tokenContract.approve(AMMRouterAddress.address, allowAmount);
+        await tx.await();
+        toast.info(`${token.symbol} is enabled!`);
+        if (index === indexTokenA) {
+            setAllowA(true);
+        }else {
+            setAllowB(true);
+        }
+
+    }catch (error) {
+        toast.error(getErrorMessage(error, `Cannot enable ${token.symbol}!`));
+
+
+    }
+    setLoading(false);
+  };
+
   const handleChange = (e) => {
     let tmpVal = e.target.value ? e.target.value : 0;
     let id = e.target.id;
@@ -72,6 +153,33 @@ const AddLiquidity = () => {
       setAvailableBalance(tmpVal <= balanceA && _amountB <= balanceB);
     }
   };
+
+  const handleSeclectToken = (token) => {
+    if (tokenIndex === indexTokenA && token.address !== tokenB.address) {
+      setTokenA(token);
+      setTokensSelected(Objects.keys(tokenB).length > 0);
+    } else if (tokenIndex === indexTokenB && token.address !== tokenA.address) {
+      setTokenB(token);
+      setAmountB(0);
+      setTokensSelected(Objects.keys(tokenA).length > 0);
+    } else {
+      toast.error("Please select a different token!");
+    }
+  };
+
+  useEffect(() => {
+    const pairAddress = searchParams.get("pair");
+    if (active && pairAddress) {
+      setTokenInfo(pairAddress);
+      getReserves();
+      getBalances();
+      checkAllowances();
+    } else if (tokensSelected) {
+      getReserves();
+      getBalances();
+      checkAllowances();
+    }
+  }, [active, searchParams, tokensSelected, checkAllowances, getBalances, getReserves, setTokenInfo]);
 
   return (
     <>
@@ -126,6 +234,24 @@ const AddLiquidity = () => {
           <Typography sx={theme.component.hintText}>Balance: {balanceB}</Typography>
         </Grid>
       </Grid>
+      {tokensSelected && (
+        <Grid container sx={{ mt: 2 }} spacing={1}>
+          {!allowA && (
+            <Grid item xs={12}>
+              <Button sx={theme.component.primaryButton} fullWidth onClick={() => handleApprove(indexTokenA)}>
+                Enable {tokenA.symbol}
+              </Button>
+            </Grid>
+          )}
+          {!allowB && (
+            <Grid item xs={12}>
+              <Button sx={theme.component.primaryButton} fullWidth onClick={() => handleApprove(indexTokenB)}>
+                Enable {tokenB.symbol}
+              </Button>
+            </Grid>
+          )}
+        </Grid>
+      )}
     </>
   );
 };
