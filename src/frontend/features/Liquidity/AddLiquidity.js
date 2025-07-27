@@ -3,7 +3,7 @@ import { useEffect, useCallback, useState } from "react";
 import { TokenPairABI } from "../../utils/TokenPairABI";
 import { useWeb3React } from "@web3-react/core";
 import { getTokenInfo, getErrorMessage, toString } from "../../utils/Helpers";
-import { Grid, Typography, useTheme, Button, TextField, Divider } from "@mui/material";
+import { Grid, Typography, useTheme, Button, TextField, Divider, CircularProgress } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownIcon";
 import { toast } from "react-toastify";
 import AMMRouterAddress from "../../contracts/AMMRouter-address.json";
@@ -114,23 +114,20 @@ const AddLiquidity = () => {
 
   const handleApprove = async (index) => {
     setLoading(true);
-    const [token, amount] = index === indexTokenA ? [tokenA, amountA] :[tokenB, amountB];
+    const [token, amount] = index === indexTokenA ? [tokenA, amountA] : [tokenB, amountB];
     try {
-        const tokenContract = new ethers.Contract(token.address, ERC20ABI, library.getSigners());
-        const allowAmount =   ethers.utils.parseUnits(toString(amount), token.decimals);
-        const tx = await tokenContract.approve(AMMRouterAddress.address, allowAmount);
-        await tx.await();
-        toast.info(`${token.symbol} is enabled!`);
-        if (index === indexTokenA) {
-            setAllowA(true);
-        }else {
-            setAllowB(true);
-        }
-
-    }catch (error) {
-        toast.error(getErrorMessage(error, `Cannot enable ${token.symbol}!`));
-
-
+      const tokenContract = new ethers.Contract(token.address, ERC20ABI, library.getSigners());
+      const allowAmount = ethers.utils.parseUnits(toString(amount), token.decimals);
+      const tx = await tokenContract.approve(AMMRouterAddress.address, allowAmount);
+      await tx.await();
+      toast.info(`${token.symbol} is enabled!`);
+      if (index === indexTokenA) {
+        setAllowA(true);
+      } else {
+        setAllowB(true);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error, `Cannot enable ${token.symbol}!`));
     }
     setLoading(false);
   };
@@ -166,6 +163,39 @@ const AddLiquidity = () => {
       toast.error("Please select a different token!");
     }
   };
+
+  const handleAddLiquidity = async () => {
+    setLoading(true);
+    try {
+      const ammRouter = new ethers.Contract(AMMRouterAddress.address, AMMRouterABI.abi, library.getSigner());
+      const deadline = parseInt(new Date().getTime() / 1000) + 30
+      let tx;
+      if (isETH(tokenA)) {
+        tx = await ammRouter.addLiquidityETH(tokenB.address,
+          ethers.utils.parseUnits(toString(amountB), tokenB.decimals), 0, 0, account, deadline,
+          { value: ethers.utils.parseUnits(toString(amountA)) });
+      } else if (isETH(tokenB)) {
+        tx = await ammRouter.addLiquidityETH(tokenA.address,
+          ethers.utils.parseUnits(toString(amountA), tokenA.decimals), 0, 0, account, deadline,
+          { value: ethers.utils.parseUnits(toString(amountB)) });
+      } else {
+        tx = await ammRouter.addLiquidity(tokenA.address, tokenB.address,
+          ethers.utils.parseUnits(toString(amountA), tokenA.decimals),
+          ethers.utils.parseUnits(toString(amountB), tokenB.decimals),
+          0, 0, account, deadline);
+      }
+      await tx.wait();
+      toast.info(`Liquidity provisioning succeeded! Transaction Hash: ${tx.hash}`);
+      setAmountA(0);
+      setAmountB(0);
+      await getBalances();
+      await getReserves();
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Cannot add liquidity!"));
+      console.error(error);
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
     const pairAddress = searchParams.get("pair");
@@ -250,6 +280,24 @@ const AddLiquidity = () => {
               </Button>
             </Grid>
           )}
+          <Grid item xs={12}>
+            <Button
+              sx={theme.component.primaryButton}
+              fullWidth
+              disabled={!allowA || !allowB || !availableBalance || amountA <= 0 || amountB <= 0}
+              onClick={handleAddLiquidity}
+            >
+              {availableBalance ? (
+                loading ? (
+                  <CircularProgress sx={{ color: "white" }} />
+                ) : (
+                  "Supply"
+                )
+              ) : (
+                "Insufficient Balance"
+              )}
+            </Button>
+          </Grid>
         </Grid>
       )}
     </>
