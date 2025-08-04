@@ -40,6 +40,3 @@ export const  toString = x => {
     }
     return x.toString();
 }
-export const isETH = token => {
-    return token.address
-}
