@@ -49,4 +49,3 @@ const TokenSelectModal = ({ open, handleClose, selectToken }) => {
 };
 
 export default TokenSelectModal;
-
