@@ -17,10 +17,10 @@ function App(){
         <BrowserRouter>
         <Layout>
             <Routes>
-                <Route path="/" element={<TokenOperations/>}>
+                <Route path="/" element={<TokenOperations/>}/>
                 <Route path="/liquidity/*" element={<LiquidityRouter />}/>
 
-                </Route>
+                
             </Routes>
         </Layout>
         <ToastContainer/>

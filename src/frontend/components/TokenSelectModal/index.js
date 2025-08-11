@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { SupportedTokens } from "../../utils/Tokens";
 import { getTokenInfo } from "../../utils/Helpers";
-import { Dialog, IconButton, DialogTitle, DialogContent, List, ListItem, Typography } from "@mui/materail";
-import ClearOutlinedIcon from "@mui/icons-materials/ClearOutlinedIcon";
+import { Dialog, IconButton, DialogTitle, DialogContent, List, ListItem, Typography } from "@mui/material";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 
 const TokenSelectModal = ({ open, handleClose, selectToken }) => {
   const [tokens, setTokens] = useState([]);

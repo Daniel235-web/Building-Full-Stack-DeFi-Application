@@ -7,7 +7,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { toast } from 'react-toastify';
 import { TokenPairABI } from '../../utils/TokenPairABI';
 import { ethers } from 'ethers';
-import { getTokenInfo, getErrorMessage, toString } from '../../utils/Helper';
+import { getTokenInfo, getErrorMessage, toString } from '../../utils/Helpers';
 import { ERC20ABI } from '../../utils/ERC20ABI';
 import AMMRouterAddress from '../../contracts/AMMRouter-address.json';
 import AMMRouterABI from '../../contracts/AMMRouter.json';
