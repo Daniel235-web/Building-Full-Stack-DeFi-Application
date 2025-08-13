@@ -12,7 +12,7 @@ const LiquidityRouter = () => {
         <Routes>
           <Route path="/" element={<ListLiquidity />} />
           <Route path="/add" element={<AddLiquidity />} />
-          <Route path="Remove" element={<RemoveLiquidity />} />
+          <Route path="remove" element={<RemoveLiquidity />} />
         </Routes>
       </Grid>
     </Grid>
