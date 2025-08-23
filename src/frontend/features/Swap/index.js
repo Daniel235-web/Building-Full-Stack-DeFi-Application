@@ -1,21 +1,30 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { Grid, Button, Collapse, Fab, CircularProgress, Typography, TextField, useTheme } from '@mui/material';
-import { ethers } from 'ethers';
-import { toast } from 'react-toastify';
-import AMMRouterAddress from '../../contracts/AMMRouter-address.json';
-import AMMRouterABI from '../../contracts/AMMRouter.json';
-import TokenSelectModal from '../../components/TokenSelectModal';
+import {
+  Grid,
+  Button,
+  Collapse,
+  Fab,
+  CircularProgress,
+  Typography,
+  TextField,
+  useTheme,
+} from "@mui/material";
+import { ethers } from "ethers";
+import { toast } from "react-toastify";
+import AMMRouterAddress from "../../contracts/AMMRouter-address.json";
+import AMMRouterABI from "../../contracts/AMMRouter.json";
+import TokenSelectModal from "../../components/TokenSelectModal";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import { buildGraphFromEdges, findAllPaths } from '../../utils/Graph';
-import FactoryABI from '../../contracts/PairFactory.json';
-import FactoryAddress from '../../contracts/PairFactory-address.json';
-import { localProvider } from '../../components/wallet';
-import { TokenPairABI } from '../../utils/TokenPairABI';
-import { getErrorMessage, getTokenInfo, toString } from '../../utils/Helpers';
-import { ERC20ABI } from '../../utils/ERC20ABI';
+import { buildGraphFromEdges, findAllPaths } from "../../utils/Graph";
+import FactoryABI from "../../contracts/PairFactory.json";
+import FactoryAddress from "../../contracts/PairFactory-address.json";
+import { localProvider } from "../../components/wallet";
+import { TokenPairABI } from "../../utils/TokenPairABI";
+import { getErrorMessage, getTokenInfo, toString } from "../../utils/Helpers";
+import { ERC20ABI } from "../../utils/ERC20ABI";
 
 const Swap = () => {
   const theme = useTheme();
@@ -43,10 +52,10 @@ const Swap = () => {
     if (Object.keys(_tokenA).length > 0 && Object.keys(_tokenB).length > 0) {
       const resetToken = () => {
         tokenIndex === indexTokenA ? setTokenA({}) : setTokenB({});
-      }
+      };
       if (_tokenA.address === _tokenB.address) {
         resetToken();
-        toast.error('The selected tokens are identical, please select another token!');
+        toast.error("The selected tokens are identical, please select another token!");
         return;
       }
       // Check if there is a path between token A and token B
@@ -66,7 +75,7 @@ const Swap = () => {
     setAllowAmount(0);
     setBestPath([]);
     setTokensSelected(true);
-  }
+  };
 
   const initGraph = useCallback(async () => {
     setLoading(true);
@@ -96,7 +105,7 @@ const Swap = () => {
         setPaths(_paths);
       }
     } catch (error) {
-      toast.error("Cannot initiate data for swapping!")
+      toast.error("Cannot initiate data for swapping!");
       console.error(error);
     }
     setLoading(false);
@@ -129,7 +138,7 @@ const Swap = () => {
       const _balanceB = await _tokenB.balanceOf(account);
       setBalanceB(Number(ethers.utils.formatUnits(_balanceB, tokenB.decimals)));
     } catch (error) {
-      toast.error(getErrorMessage(error, "Cannot get token balances!"), { toastId: 'BALANCE_0' });
+      toast.error(getErrorMessage(error, "Cannot get token balances!"), { toastId: "BALANCE_0" });
       console.error(error);
     }
   }, [account, library, tokenA, tokenB, tokensSelected]);
@@ -148,24 +157,24 @@ const Swap = () => {
     setAmountA(balanceA);
     setTokenIndex(indexTokenA);
     getReceivingAmount(balanceA);
-  }
+  };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     let tmpVal = e.target.value ? e.target.value : 0;
     let id = e.target.id;
     if (tmpVal < 0 || isNaN(tmpVal)) {
-      tmpVal = id === 'tokenA' ? amountA : amountB;
-    } else if (!(typeof tmpVal === 'string' && (tmpVal.endsWith(".") || tmpVal.startsWith(".")))) {
+      tmpVal = id === "tokenA" ? amountA : amountB;
+    } else if (!(typeof tmpVal === "string" && (tmpVal.endsWith(".") || tmpVal.startsWith(".")))) {
       tmpVal = Number(e.target.value.toString());
     }
-    if (id === 'tokenA') {
+    if (id === "tokenA") {
       setAmountA(tmpVal);
       setTokenIndex(indexTokenA);
-    } else if (id === 'tokenB') {
+    } else if (id === "tokenB") {
       setAmountB(tmpVal);
       setTokenIndex(indexTokenB);
     }
-  }
+  };
 
   const getReceivingAmount = async (amount) => {
     // amount is used for handleMax()
@@ -193,11 +202,11 @@ const Swap = () => {
       setPrice(newPrice);
       estimatePriceImpact(ammRouter, _bestPath, newPrice);
     } catch (error) {
-      toast.error('Cannot get receiving amount!');
+      toast.error("Cannot get receiving amount!");
       console.error(error);
     }
     setLoading(false);
-  }
+  };
 
   const getSpendingAmount = async () => {
     if (amountB <= 0) {
@@ -223,14 +232,14 @@ const Swap = () => {
       setPrice(newPrice);
       estimatePriceImpact(ammRouter, _bestPath, newPrice);
     } catch (error) {
-      toast.error('Insufficient reserves!');
+      toast.error("Insufficient reserves!");
       console.error(error);
     }
     setLoading(false);
-  }
+  };
 
   const printSwapPath = (path) => {
-    let result = '';
+    let result = "";
     if (!path || path.length < 2) {
       return result;
     }
@@ -238,18 +247,19 @@ const Swap = () => {
       result += ` => ${graph.get(address).token.symbol}`;
     }
     return result.substring(4);
-  }
+  };
 
   const estimatePriceImpact = async (ammRouter, path, newPrice) => {
     // Get the old price based on existing reserves through the path.
     let oldPrice = 1;
     for (let i = 0; i < path.length - 1; i++) {
-      const [reserveA, reserveB,] = await ammRouter.getReserves(path[i], path[i + 1]);
-      oldPrice = oldPrice * Number(ethers.utils.formatUnits(reserveA, graph.get(path[i]).token.decimals))
-        / Number(ethers.utils.formatUnits(reserveB, graph.get(path[i + 1]).token.decimals));
+      const [reserveA, reserveB] = await ammRouter.getReserves(path[i], path[i + 1]);
+      oldPrice =
+        (oldPrice * Number(ethers.utils.formatUnits(reserveA, graph.get(path[i]).token.decimals))) /
+        Number(ethers.utils.formatUnits(reserveB, graph.get(path[i + 1]).token.decimals));
     }
     setPriceImpact(100 * (newPrice / oldPrice - 1));
-  }
+  };
 
   const handleApprove = async () => {
     setLoading(true);
@@ -265,117 +275,180 @@ const Swap = () => {
       console.error(error);
     }
     setLoading(false);
-  }
+  };
   const handleSwap = async () => {
     setLoading(true);
     try {
       const ammRouter = new ethers.Contract(AMMRouterAddress.address, AMMRouterABI.abi, library.getSigner());
-      const deadline = parseInt(new Date().getTime() / 1000) + 30;
-      const tx = await (tokenIndex === indexTokenA ?
-        ammRouter.swapExactTokensForTokens(
-          ethers.utils.parseUnits(toString(amountA), tokenA.decimals),
-          ethers.utils.parseUnits(toString(amountB * 0.9), tokenB.decimals),  // Min acceptable receiving amount
-          bestPath, account, deadline) :
-        ammRouter.swapTokensForExactTokens(
-          ethers.utils.parseUnits(toString(amountB), tokenB.decimals),
-          ethers.utils.parseUnits(toString(amountA * 1.1), tokenA.decimals),  // Max acceptable spending amount
-          bestPath, account, deadline
-        ));
+      const deadline = parseInt(new Date().getTime() / 1000) + 300;
+      const tx = await (tokenIndex === indexTokenA
+        ? ammRouter.swapExactTokensForTokens(
+            ethers.utils.parseUnits(toString(amountA), tokenA.decimals),
+            ethers.utils.parseUnits(toString(amountB * 0.85), tokenB.decimals), // Min acceptable receiving amount
+            bestPath,
+            account,
+            deadline
+          )
+        : ammRouter.swapTokensForExactTokens(
+            ethers.utils.parseUnits(toString(amountB), tokenB.decimals),
+            ethers.utils.parseUnits(toString(amountA * 1.1), tokenA.decimals), // Max acceptable spending amount
+            bestPath,
+            account,
+            deadline
+          ));
       await tx.wait();
-      toast.info(`Swap succeeded! Transaction Hash: ${tx.hash}`)
+      toast.info(`Swap succeeded! Transaction Hash: ${tx.hash}`);
       setAmountA(0);
       setAmountB(0);
       await getBalances();
       await checkAllowance();
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Cannot perform swap!'));
+      toast.error(getErrorMessage(error, "Cannot perform swap!"));
       console.error(error);
     }
     setLoading(false);
-  }
+  };
 
-  return <>
-    <Grid container alignItems="center" width="90vw" direction="column">
-      <Grid item>
-        <Typography variant='h6'>Swap</Typography>
-      </Grid>
-      <Grid item>
-        <Typography>Exchange one token with another token</Typography>
-      </Grid>
-      <Grid item>
-        <Grid container justifyContent="center" spacing="10" sx={{ my: 1 }}>
-          <Grid item>
-            <Typography sx={theme.component.hintText}>Buy with</Typography>
-            <Button sx={theme.component.selectButton}
-              endIcon={<KeyboardArrowDownIcon />}
-              onClick={() => { setOpenModal(true); setTokenIndex(indexTokenA); }}>
-              {Object.keys(tokenA).length === 0 ? "Select a token" : tokenA.symbol}
-            </Button>
-          </Grid>
-          <Grid item>
-            <TextField sx={{ mt: 1 }} id="tokenA" label="The amount to spend" value={amountA}
-              onChange={handleChange} onBlur={() => getReceivingAmount()} />
-            <Grid container>
-              <Grid item>
-                <Typography sx={{ ...theme.component.hintText, mt: 0.4 }}>Balance: {balanceA}</Typography>
-              </Grid>
-              <Grid item>
-                <Button sx={{ fontSize: 12, padding: '0px' }} onClick={() => handleMax()} >Max</Button>
+  return (
+    <>
+      <Grid container alignItems="center" width="90vw" direction="column">
+        <Grid item>
+          <Typography variant="h6">Swap</Typography>
+        </Grid>
+        <Grid item>
+          <Typography>Exchange one token with another token</Typography>
+        </Grid>
+        <Grid item>
+          <Grid container justifyContent="center" spacing="10" sx={{ my: 1 }}>
+            <Grid item>
+              <Typography sx={theme.component.hintText}>Buy with</Typography>
+              <Button
+                sx={theme.component.selectButton}
+                endIcon={<KeyboardArrowDownIcon />}
+                onClick={() => {
+                  setOpenModal(true);
+                  setTokenIndex(indexTokenA);
+                }}
+              >
+                {Object.keys(tokenA).length === 0 ? "Select a token" : tokenA.symbol}
+              </Button>
+            </Grid>
+            <Grid item>
+              <TextField
+                sx={{ mt: 1 }}
+                id="tokenA"
+                label="The amount to spend"
+                value={amountA}
+                onChange={handleChange}
+                onBlur={() => getReceivingAmount()}
+              />
+              <Grid container>
+                <Grid item>
+                  <Typography sx={{ ...theme.component.hintText, mt: 0.4 }}>Balance: {balanceA}</Typography>
+                </Grid>
+                <Grid item>
+                  <Button sx={{ fontSize: 12, padding: "0px" }} onClick={() => handleMax()}>
+                    Max
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid container justifyContent="center" alignItems="center">
-          <Fab onClick={() => selectToken(tokenB, tokenA)}
-            onMouseEnter={() => setHoverOnSwitch(true)}
-            onMouseLeave={() => setHoverOnSwitch(false)}>
-            {hoverOnSwitch ? <SwapVertIcon /> : <ArrowDownwardIcon />}
-          </Fab>
-        </Grid>
-        <Grid container justifyContent="center" spacing="10" sx={{ my: 1 }}>
-          <Grid item>
-            <Typography sx={theme.component.hintText}>You'll get</Typography>
-            <Button sx={theme.component.selectButton}
-              endIcon={<KeyboardArrowDownIcon />}
-              onClick={() => { setOpenModal(true); setTokenIndex(indexTokenB); }}>
-              {Object.keys(tokenB).length === 0 ? "Select a token" : tokenB.symbol}
-            </Button>
+          <Grid container justifyContent="center" alignItems="center">
+            <Fab
+              onClick={() => selectToken(tokenB, tokenA)}
+              onMouseEnter={() => setHoverOnSwitch(true)}
+              onMouseLeave={() => setHoverOnSwitch(false)}
+            >
+              {hoverOnSwitch ? <SwapVertIcon /> : <ArrowDownwardIcon />}
+            </Fab>
           </Grid>
-          <Grid item>
-            <TextField sx={{ mt: 1 }} id="tokenB" label="The amount to receive" value={amountB}
-              onChange={handleChange} onBlur={() => getSpendingAmount()} />
-            <Typography sx={theme.component.hintText}>Balance: {balanceB}</Typography>
+          <Grid container justifyContent="center" spacing="10" sx={{ my: 1 }}>
+            <Grid item>
+              <Typography sx={theme.component.hintText}>You'll get</Typography>
+              <Button
+                sx={theme.component.selectButton}
+                endIcon={<KeyboardArrowDownIcon />}
+                onClick={() => {
+                  setOpenModal(true);
+                  setTokenIndex(indexTokenB);
+                }}
+              >
+                {Object.keys(tokenB).length === 0 ? "Select a token" : tokenB.symbol}
+              </Button>
+            </Grid>
+            <Grid item>
+              <TextField
+                sx={{ mt: 1 }}
+                id="tokenB"
+                label="The amount to receive"
+                value={amountB}
+                onChange={handleChange}
+                onBlur={() => getSpendingAmount()}
+              />
+              <Typography sx={theme.component.hintText}>Balance: {balanceB}</Typography>
+            </Grid>
           </Grid>
-        </Grid>
-        <Collapse in={price > 0} sx={{ my: 2 }} >
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item sx={{ fontWeight: 600 }}>Price</Grid>
-            <Grid item>{price.toFixed(2)} {tokenA.symbol} per {tokenB.symbol}</Grid>
+          <Collapse in={price > 0} sx={{ my: 2 }}>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item sx={{ fontWeight: 600 }}>
+                Price
+              </Grid>
+              <Grid item>
+                {price.toFixed(2)} {tokenA.symbol} per {tokenB.symbol}
+              </Grid>
+            </Grid>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item sx={{ fontWeight: 600 }}>
+                Price Impact
+              </Grid>
+              <Grid item>{priceImpact.toFixed(2)} %</Grid>
+            </Grid>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item sx={{ fontWeight: 600 }}>
+                Path
+              </Grid>
+              <Grid item>{printSwapPath(bestPath)}</Grid>
+            </Grid>
+          </Collapse>
+          <Grid container justifyContent="center" alignItems="center">
+            {active ? (
+              <Grid item xs={12}>
+                {allowAmount < amountA ? (
+                  <Button sx={theme.component.primaryButton} fullWidth onClick={() => handleApprove()}>
+                    {loading ? <CircularProgress sx={{ color: "white" }} /> : `Enable ${tokenA.symbol}`}
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={amountA <= 0 || amountB <= 0 || balanceA < amountA || loading}
+                    fullWidth
+                    sx={theme.component.primaryButton}
+                    onClick={() => handleSwap()}
+                  >
+                    {loading ? (
+                      <CircularProgress sx={{ color: "white" }} />
+                    ) : balanceA < amountA ? (
+                      "Insufficient Balance"
+                    ) : (
+                      "Swap"
+                    )}
+                  </Button>
+                )}
+              </Grid>
+            ) : (
+              <Typography>Please connect wallet to swap!</Typography>
+            )}
           </Grid>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item sx={{ fontWeight: 600 }}>Price Impact</Grid>
-            <Grid item>{priceImpact.toFixed(2)} %</Grid>
-          </Grid>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item sx={{ fontWeight: 600 }}>Path</Grid>
-            <Grid item>{printSwapPath(bestPath)}</Grid>
-          </Grid>
-        </Collapse>
-        <Grid container justifyContent="center" alignItems="center">
-          {active ? <Grid item xs={12}>
-            {allowAmount < amountA ? <Button sx={theme.component.primaryButton} fullWidth onClick={() => handleApprove()}>
-              {loading ? <CircularProgress sx={{ color: 'white' }} /> : `Enable ${tokenA.symbol}`}
-            </Button> : <Button disabled={amountA <= 0 || amountB <= 0 || balanceA < amountA || loading}
-              fullWidth sx={theme.component.primaryButton} onClick={() => handleSwap()}>
-              {loading ? <CircularProgress sx={{ color: 'white' }} /> : (balanceA < amountA ? "Insufficient Balance" : "Swap")}
-            </Button>}
-          </Grid> : <Typography>Please connect wallet to swap!</Typography>}
         </Grid>
       </Grid>
-    </Grid>
-    <TokenSelectModal open={openModal} handleClose={() => setOpenModal(false)} selectToken={token =>
-      tokenIndex === indexTokenA ? selectToken(token, tokenB) : selectToken(tokenA, token)
-    } />
-  </>
-}
+      <TokenSelectModal
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+        selectToken={(token) =>
+          tokenIndex === indexTokenA ? selectToken(token, tokenB) : selectToken(tokenA, token)
+        }
+      />
+    </>
+  );
+};
 export default Swap;

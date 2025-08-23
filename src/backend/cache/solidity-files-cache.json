@@ -304,8 +304,8 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/libraries/Helper.sol": {
-      "lastModificationDate": 1751397175515,
-      "contentHash": "709ead67aa0b3581b2f8d7ff8bfd2d8a",
+      "lastModificationDate": 1755929682185,
+      "contentHash": "7d718d2fe8f7706deadca9cd61e1e5e8",
       "sourceName": "src/backend/contracts/libraries/Helper.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -528,8 +528,8 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/interfaces/IAMMRouter.sol": {
-      "lastModificationDate": 1750835320759,
-      "contentHash": "fa256d867574ee8bf8d1f89330566633",
+      "lastModificationDate": 1755720933796,
+      "contentHash": "053a6cf44a98092026dac8e12f7d8907",
       "sourceName": "src/backend/contracts/interfaces/IAMMRouter.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -602,8 +602,8 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/AMMRouter.sol": {
-      "lastModificationDate": 1751984205388,
-      "contentHash": "77d6601eef279ef703dfee241cb59a7e",
+      "lastModificationDate": 1755931671729,
+      "contentHash": "443b1dd99747758239a540c36bcaed29",
       "sourceName": "src/backend/contracts/AMMRouter.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -630,10 +630,11 @@
         }
       },
       "imports": [
-        "./interfaces/IPairFactory.sol",
         "./interfaces/IAMMRouter.sol",
-        "./libraries/Helper.sol",
-        "./interfaces/ITokenPair.sol"
+        "./interfaces/IPairFactory.sol",
+        "./interfaces/ITokenPair.sol",
+        "./interfaces/IWETH.sol",
+        "./libraries/Helper.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -716,6 +717,78 @@
       ],
       "artifacts": [
         "BarToken"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/interfaces/IWETH.sol": {
+      "lastModificationDate": 1755724721275,
+      "contentHash": "27fd0755199fcaff38097dea90ac0fed",
+      "sourceName": "src/backend/contracts/interfaces/IWETH.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IWETH"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/WETH.sol": {
+      "lastModificationDate": 1755456587496,
+      "contentHash": "5be868cb4b66417e56409d444f9e9bcd",
+      "sourceName": "src/backend/contracts/WETH.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "WETH"
       ]
     }
   }
