@@ -1,17 +1,26 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "./interfaces/IPairFactory.sol";
+
 import "./interfaces/IAMMRouter.sol";
-import "./libraries/Helper.sol";
+import "./interfaces/IPairFactory.sol";
 import "./interfaces/ITokenPair.sol";
+import "./interfaces/IWETH.sol";
+import "./libraries/Helper.sol";
 
 contract AMMRouter is IAMMRouter {
     address public immutable factory;
+    address public immutable WETH;
     bytes32 private initCodeHash;
 
-    constructor(address _factory) {
+    constructor(address _factory, address _WETH) {
         factory = _factory;
+        WETH = _WETH;
         initCodeHash = IPairFactory(factory).INIT_CODE_PAIR_HASH();
+    }
+
+    // Make AMMRouter can receive ETH
+    receive() external payable {
+        assert(msg.sender == WETH); // only accept ETH via fallback from the WETH contract
     }
 
     modifier ensure(uint256 deadline) {
@@ -19,11 +28,16 @@ contract AMMRouter is IAMMRouter {
         _;
     }
 
-    //Fetch reserves and pair address of a pair while respecting the token  order
-    function getReserves(
-        address tokenA,
-        address tokenB
-    ) public view returns (uint256 reserveA, uint256 reserveB, address pair) {
+    // Fetch the reserves and pair address for a pair while respecting the token order
+    function getReserves(address tokenA, address tokenB)
+        public
+        view
+        returns (
+            uint256 reserveA,
+            uint256 reserveB,
+            address pair
+        )
+    {
         (address _tokenA, ) = Helper.sortTokens(tokenA, tokenB);
         pair = Helper.pairFor(factory, tokenA, tokenB, initCodeHash);
         (uint256 _reserveA, uint256 _reserveB, ) = ITokenPair(pair)
@@ -33,11 +47,12 @@ contract AMMRouter is IAMMRouter {
             : (_reserveB, _reserveA);
     }
 
-    //perform getAmount calculations along the pair in the path
-    function getAmountsOut(
-        uint256 amountIn,
-        address[] memory path
-    ) public view returns (uint256[] memory amounts) {
+    // Perform getAmountOut calculation along the pairs in the path
+    function getAmountsOut(uint256 amountIn, address[] memory path)
+        public
+        view
+        returns (uint256[] memory amounts)
+    {
         require(path.length >= 2, "INVALID_PATH");
         amounts = new uint256[](path.length);
         amounts[0] = amountIn;
@@ -54,11 +69,12 @@ contract AMMRouter is IAMMRouter {
         }
     }
 
-    //perform getAmountIn calcutlations  from the pair in the end of the path
-    function getAmountsIn(
-        uint256 amountOut,
-        address[] memory path
-    ) public view returns (uint256[] memory amounts) {
+    // Perform getAmountIn calculation from the pair in the end of the path
+    function getAmountsIn(uint256 amountOut, address[] memory path)
+        public
+        view
+        returns (uint256[] memory amounts)
+    {
         require(path.length >= 2, "INVALID_PATH");
         amounts = new uint256[](path.length);
         amounts[amounts.length - 1] = amountOut;
@@ -75,35 +91,38 @@ contract AMMRouter is IAMMRouter {
         }
     }
 
-    //ADD Liquidity
-    function addLiquidity(
+    // Internal Add Liquidity Function
+    function _addLiquidity(
         address tokenA,
         address tokenB,
         uint256 amountADesired,
         uint256 amountBDesired,
         uint256 amountAMin,
-        uint256 amountBMin,
-        address to,
-        uint256 deadline
+        uint256 amountBMin
     )
-        external
-        ensure(deadline)
-        returns (uint256 amountA, uint256 amountB, uint256 liquidity)
+        internal
+        returns (
+            uint256 amountA,
+            uint256 amountB,
+            address pair
+        )
     {
-        //create a pair if the token does not exist
+        // Step 1: Create a pair if it doesn't exist
         if (IPairFactory(factory).getPair(tokenA, tokenB) == address(0)) {
             IPairFactory(factory).createPair(tokenA, tokenB);
         }
-        //step 2 get reserves of the token pair
-        (uint256 reserveA, uint256 reserveB, address pair) = getReserves(
-            tokenA,
-            tokenB
-        );
-        //step 3: calculate the actual amounts of the token for lquidity
+
+        // Step 2: Get Reserves of the pair of tokens
+        uint256 reserveA;
+        uint256 reserveB;
+        (reserveA, reserveB, pair) = getReserves(tokenA, tokenB);
+
+        // Step 3: Calculate the actual amounts of tokens for liquidity
         if (reserveA == 0 && reserveB == 0) {
+            // No liquidity yet
             (amountA, amountB) = (amountADesired, amountBDesired);
         } else {
-            //Liquidity alreay exists
+            // Liquidity already exists
             uint256 amountBOptimal = Helper.quote(
                 amountADesired,
                 reserveA,
@@ -129,14 +148,91 @@ contract AMMRouter is IAMMRouter {
                 (amountA, amountB) = (amountAOptimal, amountBDesired);
             }
         }
-        //step 4: transfer tokens from user to pair;
+    }
+
+    // Add Liquidity
+    function addLiquidity(
+        address tokenA,
+        address tokenB,
+        uint256 amountADesired,
+        uint256 amountBDesired,
+        uint256 amountAMin,
+        uint256 amountBMin,
+        address to,
+        uint256 deadline
+    )
+        external
+        ensure(deadline)
+        returns (
+            uint256 amountA,
+            uint256 amountB,
+            uint256 liquidity
+        )
+    {
+        address pair;
+        // Step 1, 2, 3 implemented in _addLiquidity
+        (amountA, amountB, pair) = _addLiquidity(
+            tokenA,
+            tokenB,
+            amountADesired,
+            amountBDesired,
+            amountAMin,
+            amountBMin
+        );
+        // Step 4: Transfer tokens from user to pair
         Helper.safeTransferFrom(tokenA, msg.sender, pair, amountA);
         Helper.safeTransferFrom(tokenB, msg.sender, pair, amountB);
-        //step 5 mint and send back LP tokens to users
+
+        // Step 5: Mint and send back LP tokens to user
         liquidity = ITokenPair(pair).mint(to);
     }
 
-    //Remove Liquidity
+    function addLiquidityETH(
+        address token,
+        uint256 amountTokenDesired,
+        uint256 amountTokenMin,
+        uint256 amountETHMin,
+        address to,
+        uint256 deadline
+    )
+        external
+        payable
+        ensure(deadline)
+        returns (
+            uint256 amountToken,
+            uint256 amountETH,
+            uint256 liquidity
+        )
+    {
+        address pair;
+        // Step 1, 2, 3 implemented in _addLiquidity
+        (amountToken, amountETH, pair) = _addLiquidity(
+            token,
+            WETH,
+            amountTokenDesired,
+            msg.value,
+            amountTokenMin,
+            amountETHMin
+        );
+
+        // Step 4: Transfer token from user to pair
+        Helper.safeTransferFrom(token, msg.sender, pair, amountToken);
+
+        // Step 5: ETH is transferred to router, now wrap the ETH
+        IWETH(WETH).deposit{value: amountETH}();
+
+        // Step 6: Transfer Wrapped ETH from router to pair
+        assert(IWETH(WETH).transfer(pair, amountETH));
+
+        // Step 7: Mint and send back LP tokens to user
+        liquidity = ITokenPair(pair).mint(to);
+
+        // Step 8: Refund user the ETH if the calculated ETH amount is less than the amount sent to router
+        if (msg.value > amountETH)
+            Helper.safeTransferETH(msg.sender, msg.value - amountETH);
+    }
+
+    // Remove Liquidity
     function removeLiquidity(
         address tokenA,
         address tokenB,
@@ -146,12 +242,14 @@ contract AMMRouter is IAMMRouter {
         address to,
         uint256 deadline
     ) public ensure(deadline) returns (uint256 amountA, uint256 amountB) {
-        //step 1: transfer Lp tokens to pair
+        // Step 1: Tranfer LP tokens to pair
         address pair = Helper.pairFor(factory, tokenA, tokenB, initCodeHash);
         Helper.safeTransferFrom(pair, msg.sender, pair, liquidity);
-        //Burn Lp tokens and transfer removed liquidity back to user
+
+        // Step 2: Burn LP tokens and transfer removed liquidity back to user
         (uint256 amount0, uint256 amount1) = ITokenPair(pair).burn(to);
-        //step 3 : verify the amounts of liquidity are sufficient
+
+        // Step 3: Verify the amounts of the liquidity are sufficient
         (address _tokenA, ) = Helper.sortTokens(tokenA, tokenB);
         (amountA, amountB) = tokenA == _tokenA
             ? (amount0, amount1)
@@ -160,9 +258,37 @@ contract AMMRouter is IAMMRouter {
         require(amountB >= amountBMin, "INSUFFICIENT_B_AMOUNT");
     }
 
-    //Internal function  for swapping tokens along the specified path in a loop
-    //requires the initial amount  to have already been sent  to the first pair
+    function removeLiquidityETH(
+        address token,
+        uint256 liquidity,
+        uint256 amountTokenMin,
+        uint256 amountETHMin,
+        address to,
+        uint256 deadline
+    ) public ensure(deadline) returns (uint256 amountToken, uint256 amountETH) {
+        // Step 1, 2, 3 implemented in removeLiquidity, and router will hold the tokens that are removed from liquidity
+        (amountToken, amountETH) = removeLiquidity(
+            token,
+            WETH,
+            liquidity,
+            amountTokenMin,
+            amountETHMin,
+            address(this),
+            deadline
+        );
 
+        // Step 4: Transfer token from router to the user
+        Helper.safeTransfer(token, to, amountToken);
+
+        // Step 5: Unwrap the ETH
+        IWETH(WETH).withdraw(amountETH);
+
+        // Step 6: Transfer ETH from router to the user
+        Helper.safeTransferETH(to, amountETH);
+    }
+
+    // Internal function for swapping tokens along the specified path in a loop
+    // requires the initial amount to have already been sent to the first pair
     function _swap(
         uint256[] memory amounts,
         address[] memory path,
@@ -183,7 +309,7 @@ contract AMMRouter is IAMMRouter {
         }
     }
 
-    //swapping by specifying  spending amount
+    // Swapping by specifying spending amount
     function swapExactTokensForTokens(
         uint256 amountIn,
         uint256 amountOutMin,
@@ -191,24 +317,26 @@ contract AMMRouter is IAMMRouter {
         address to,
         uint256 deadline
     ) external ensure(deadline) returns (uint256[] memory amounts) {
-        //step 1:calculate the amount to be swapped along the path
+        // Step 1: Calculate the amounts to be swapped out along the path
         amounts = getAmountsOut(amountIn, path);
         require(
             amounts[amounts.length - 1] >= amountOutMin,
             "INSUFFICIENT_OUTPUT_AMOUNT"
         );
-        //STEP 2: transfer the first pair in the path
+
+        // Step 2: Transfer to the first pair in the path
         Helper.safeTransferFrom(
             path[0],
             msg.sender,
             Helper.pairFor(factory, path[0], path[1], initCodeHash),
             amounts[0]
         );
-        //step 3: swap through the path  for each pair with the amounts
+
+        // Step 3: Swap through the path for each pair with the amounts
         _swap(amounts, path, to);
     }
 
-    //swapping by specicifying the receiving amount
+    // Swapping by specifying the receiving amount
     function swapTokensForExactTokens(
         uint256 amountOut,
         uint256 amountInMax,
@@ -216,17 +344,147 @@ contract AMMRouter is IAMMRouter {
         address to,
         uint256 deadline
     ) external ensure(deadline) returns (uint256[] memory amounts) {
-        //step 1 : calculate the input amounts from the end of the path
+        // Step 1: Calculate the input amounts from the end of the path
         amounts = getAmountsIn(amountOut, path);
         require(amounts[0] <= amountInMax, "EXCESSIVE_INPUT_AMOUNT");
 
-        //step 2:  transfer to the first pair in the path
+        // Step 2: Transfer to the first pair in the path
         Helper.safeTransferFrom(
             path[0],
             msg.sender,
             Helper.pairFor(factory, path[0], path[1], initCodeHash),
             amounts[0]
         );
+
+        // Step 3: Swap through the path for each pair with the amounts
         _swap(amounts, path, to);
+    }
+
+    // Swapping for token by specifying the spending amount of ETH
+    function swapExactETHForTokens(
+        uint256 amountOutMin,
+        address[] calldata path,
+        address to,
+        uint256 deadline
+    ) external payable ensure(deadline) returns (uint256[] memory amounts) {
+        require(path[0] == WETH, "INVALID_PATH");
+        // Step 1: Calculate the output amounts from the beginning of the path
+        amounts = getAmountsOut(msg.value, path);
+        require(
+            amounts[amounts.length - 1] >= amountOutMin,
+            "INSUFFICIENT_OUTPUT_AMOUNT"
+        );
+        // Step 2: Wrap the ETH
+        IWETH(WETH).deposit{value: amounts[0]}();
+
+        // Step 3: Transfer the wrapped ETH to the first pair
+        assert(
+            IWETH(WETH).transfer(
+                Helper.pairFor(factory, path[0], path[1], initCodeHash),
+                amounts[0]
+            )
+        );
+
+        // Step 4: Swap through the path for each pair with the amounts
+        _swap(amounts, path, to);
+    }
+
+    // Swapping with token by specifying the receiving amount of ETH
+    function swapTokensForExactETH(
+        uint256 amountOut,
+        uint256 amountInMax,
+        address[] calldata path,
+        address to,
+        uint256 deadline
+    ) external ensure(deadline) returns (uint256[] memory amounts) {
+        require(path[path.length - 1] == WETH, "INVALID_PATH");
+
+        // Step 1: Calculate the input amounts from the end of the path
+        amounts = getAmountsIn(amountOut, path);
+        require(amounts[0] <= amountInMax, "EXCESSIVE_INPUT_AMOUNT");
+
+        // Step 2: Transfer the token to the first pair of the path
+        Helper.safeTransferFrom(
+            path[0],
+            msg.sender,
+            Helper.pairFor(factory, path[0], path[1], initCodeHash),
+            amounts[0]
+        );
+
+        // Step 3: Swap through the path for each pair with the amounts
+        _swap(amounts, path, address(this));
+
+        // Step 4: Unwrap WETH (turn it into ETH)
+        IWETH(WETH).withdraw(amounts[amounts.length - 1]);
+
+        // Step 5: Transfer ETH to the user
+        Helper.safeTransferETH(to, amounts[amounts.length - 1]);
+    }
+
+    // Swapping for ETH by specifying the spending amount of token
+    function swapExactTokensForETH(
+        uint256 amountIn,
+        uint256 amountOutMin,
+        address[] calldata path,
+        address to,
+        uint256 deadline
+    ) external ensure(deadline) returns (uint256[] memory amounts) {
+        require(path[path.length - 1] == WETH, "INVALID_PATH");
+
+        // Step 1: Calculate the output amounts from the beginning of the path
+        amounts = getAmountsOut(amountIn, path);
+        require(
+            amounts[amounts.length - 1] >= amountOutMin,
+            "INSUFFICIENT_OUTPUT_AMOUNT"
+        );
+
+        // Step 2: Transfer the token to the first pair of the path
+        Helper.safeTransferFrom(
+            path[0],
+            msg.sender,
+            Helper.pairFor(factory, path[0], path[1], initCodeHash),
+            amounts[0]
+        );
+
+        // Step 3: Swap through the path for each pair with the amounts
+        _swap(amounts, path, address(this));
+
+        // Step 4: Unwrap WETH (turn it into ETH)
+        IWETH(WETH).withdraw(amounts[amounts.length - 1]);
+
+        // Step 5: Transfer ETH to the user
+        Helper.safeTransferETH(to, amounts[amounts.length - 1]);
+    }
+
+    // Swapping with ETH by specifying the receiving amount of token
+    function swapETHForExactTokens(
+        uint256 amountOut,
+        address[] calldata path,
+        address to,
+        uint256 deadline
+    ) external payable ensure(deadline) returns (uint256[] memory amounts) {
+        require(path[0] == WETH, "INVALID_PATH");
+
+        // Step 1: Calculate the input amounts from the end of the path
+        amounts = getAmountsIn(amountOut, path);
+        require(amounts[0] <= msg.value, "EXCESSIVE_INPUT_AMOUNT");
+
+        // Step 2: Wrap the ETH
+        IWETH(WETH).deposit{value: amounts[0]}();
+
+        // Step 3: Transfer the wrapped ETH to the first pair
+        assert(
+            IWETH(WETH).transfer(
+                Helper.pairFor(factory, path[0], path[1], initCodeHash),
+                amounts[0]
+            )
+        );
+
+        // Step 4: Swap through the path for each pair with the amounts
+        _swap(amounts, path, to);
+
+        // Step 5: Refund user the ETH if the calculated ETH amount is less than the amount sent to router
+        if (msg.value > amounts[0])
+            Helper.safeTransferETH(msg.sender, msg.value - amounts[0]);
     }
 }
