@@ -1,52 +1,68 @@
-const { ethers, artifacts } = require("hardhat");
+// We require the Hardhat Runtime Environment explicitly here. This is optional
+// but useful for running the script in a standalone fashion through `node <script>`.
+//
+// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
+// will compile your contracts, add the Hardhat Runtime Environment's members to the
+// global scope, and execute the script.
+const { ethers } = require("hardhat");
 const fs = require("fs");
+
 async function main() {
   const [deployer] = await ethers.getSigners();
+
   const contractList = [
-    // "Contract Name ", "Contract Factory Name"
+    // "Contract Name", "Contract Factory Name"
     ["Simple DeFi Token", "SimpleDeFiToken"],
     ["Meme Token", "MemeToken"],
     ["Foo Token", "FooToken"],
     ["Bar Token", "BarToken"],
+    ["Wrapped ETH", "WETH"],
     ["Pair Factory", "PairFactory"],
-    ["AMM Router", "AMMRouter"], //note that factory must come after the pair factory because of the forloop below
+    ["AMM Router", "AMMRouter"], // AMMRouter must come after PairFactory and WETH
   ];
+
   let pairFactoryAddress;
+  let wethAddress;
 
-  //Deploying the smart contracts and safe  the contract to frontend
-
+  // Deploying the smart contracts and save contracts to frontend
   for (const [name, factory] of contractList) {
     let contractFactory = await ethers.getContractFactory(factory);
     let contract =
       factory === "AMMRouter"
-        ? await contractFactory.deploy(pairFactoryAddress)
+        ? await contractFactory.deploy(pairFactoryAddress, wethAddress)
         : await contractFactory.deploy();
     console.log(`${name} Contract Address:`, contract.address);
     if (factory === "PairFactory") {
       pairFactoryAddress = contract.address;
+    } else if (factory === "WETH") {
+      wethAddress = contract.address;
     }
     saveContractToFrontend(contract, factory);
   }
 
-  console.log("Deployer's address", deployer.address);
-  console.log("Deployer's ETH balance", (await deployer.provider.getBalance(deployer.address)).toString());
+  console.log("Deployer: ", deployer.address);
+  console.log("Deployer ETH balance: ", (await deployer.getBalance()).toString());
 }
-function saveContractToFrontend(contract, name) {
-  const contractDir = __dirname + "/../src/frontend/contracts";
 
-  if (!fs.existsSync(contractDir)) {
-    fs.mkdirSync(contractDir);
+function saveContractToFrontend(contract, name) {
+  const contractsDir = __dirname + "/../src/frontend/contracts";
+  if (!fs.existsSync(contractsDir)) {
+    fs.mkdirSync(contractsDir);
   }
+
   fs.writeFileSync(
-    contractDir + `/${name}-address.json`,
+    contractsDir + `/${name}-address.json`,
     JSON.stringify({ address: contract.address }, undefined, 2)
   );
-  const contractArtifacts = artifacts.readArtifactSync(name);
 
-  fs.writeFileSync(contractDir + `/${name}.json`, JSON.stringify(contractArtifacts, null, 2));
+  const contractArtifact = artifacts.readArtifactSync(name);
+
+  fs.writeFileSync(contractsDir + `/${name}.json`, JSON.stringify(contractArtifact, null, 2));
 }
 
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
 main().catch((error) => {
   console.error(error);
-  process.exitcode = 1;
+  process.exitCode = 1;
 });
