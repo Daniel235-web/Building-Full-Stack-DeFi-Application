@@ -3,11 +3,15 @@ import { SupportedTokens } from "../../utils/Tokens";
 import { getTokenInfo } from "../../utils/Helpers";
 import { Dialog, IconButton, DialogTitle, DialogContent, List, ListItem, Typography } from "@mui/material";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import WETH from "../../contracts/WETH-address.json";
 
 const TokenSelectModal = ({ open, handleClose, selectToken }) => {
   const [tokens, setTokens] = useState([]);
   const getSupportedTokens = useCallback(async () => {
-    const _tokens = [];
+    const _tokens = [
+      { address: WETH.address, name: "Ether", symbol: "ETH", decimals: 18 },
+      { address: WETH.address, name: "Wrapped ETH", symbol: "WETH", decimals: 18 },
+    ];
     for (let address of SupportedTokens) {
       _tokens.push(await getTokenInfo(address));
     }
