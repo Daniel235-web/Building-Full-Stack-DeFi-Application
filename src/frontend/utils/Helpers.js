@@ -1,11 +1,16 @@
 import { localProvider } from "../components/wallet";
 import { ethers } from "ethers";
 import { ERC20ABI } from "./ERC20ABI";
+import WETH from '../contracts/WETH-address.json';
 
 export const getTokenInfo = async (address) => {
   let name = "Unknown",
     symbol = "Unknown",
     decimals = 18;
+      if (address === WETH.address) {
+    // Shortcut for Ether
+    return { address, name: "Ether", symbol: "ETH", decimals: 18 };
+  }
   try {
     const contract = new ethers.Contract(address, ERC20ABI, localProvider);
     name = await contract.name();
@@ -40,3 +45,6 @@ export const toString = (x) => {
   }
   return x.toString();
 };
+export const isETH = token => {
+  return token.address === WETH.address && token.symbol === 'ETH';
+}
