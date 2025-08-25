@@ -19,6 +19,7 @@ async function main() {
     ["Wrapped ETH", "WETH"],
     ["Pair Factory", "PairFactory"],
     ["AMM Router", "AMMRouter"], // AMMRouter must come after PairFactory and WETH
+    ["Staking Pool Manager", "StakingPoolManager"]
   ];
 
   let pairFactoryAddress;
@@ -27,10 +28,9 @@ async function main() {
   // Deploying the smart contracts and save contracts to frontend
   for (const [name, factory] of contractList) {
     let contractFactory = await ethers.getContractFactory(factory);
-    let contract =
-      factory === "AMMRouter"
-        ? await contractFactory.deploy(pairFactoryAddress, wethAddress)
-        : await contractFactory.deploy();
+    let contract = factory === "AMMRouter" ?
+      await contractFactory.deploy(pairFactoryAddress, wethAddress) :
+      await contractFactory.deploy();
     console.log(`${name} Contract Address:`, contract.address);
     if (factory === "PairFactory") {
       pairFactoryAddress = contract.address;
@@ -57,7 +57,10 @@ function saveContractToFrontend(contract, name) {
 
   const contractArtifact = artifacts.readArtifactSync(name);
 
-  fs.writeFileSync(contractsDir + `/${name}.json`, JSON.stringify(contractArtifact, null, 2));
+  fs.writeFileSync(
+    contractsDir + `/${name}.json`,
+    JSON.stringify(contractArtifact, null, 2)
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
