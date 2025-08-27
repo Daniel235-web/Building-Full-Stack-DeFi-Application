@@ -69,7 +69,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
             decimalsRewardToken < 30,
             "Decimals of reward token must be less than 30"
         );
-        PRECISION_FACTOR = 10**(30 - decimalsRewardToken);
+        PRECISION_FACTOR = 10 ** (30 - decimalsRewardToken);
 
         // Set the last reward block as the start block
         lastRewardBlock = rewardStartBlock;
@@ -130,10 +130,10 @@ contract StakingPool is Ownable, ReentrancyGuard {
     /*
      * The function allows owner to recover wrong tokens sent to the contract
      */
-    function recoverWrongTokens(address _tokenAddress, uint256 _tokenAmount)
-        external
-        onlyOwner
-    {
+    function recoverWrongTokens(
+        address _tokenAddress,
+        uint256 _tokenAmount
+    ) external onlyOwner {
         require(
             _tokenAddress != address(stakedToken),
             "Cannot be staked token"
@@ -191,11 +191,10 @@ contract StakingPool is Ownable, ReentrancyGuard {
     /*
      * Return number of blocks for reward (the multiplier) over the given _from and _to block number
      */
-    function _getMultiplier(uint256 _from, uint256 _to)
-        internal
-        view
-        returns (uint256)
-    {
+    function _getMultiplier(
+        uint256 _from,
+        uint256 _to
+    ) internal view returns (uint256) {
         if (_to <= rewardEndBlock) {
             return _to - _from;
         } else if (_from >= rewardEndBlock) {
