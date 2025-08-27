@@ -904,8 +904,8 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/StakingPool.sol": {
-      "lastModificationDate": 1756161126181,
-      "contentHash": "49945228b5beae7bd3ec14c57fcca3b2",
+      "lastModificationDate": 1756295688003,
+      "contentHash": "fa8b6c1c251cbaa733d7c475dbd8dd8f",
       "sourceName": "src/backend/contracts/StakingPool.sol",
       "solcConfig": {
         "version": "0.8.28",
