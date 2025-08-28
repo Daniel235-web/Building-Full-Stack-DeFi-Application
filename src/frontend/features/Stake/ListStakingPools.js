@@ -11,7 +11,7 @@ import { ethers } from 'ethers';
 import ManagerAddress from '../../contracts/StakingPoolManager-address.json';
 import ManagerABI from '../../contracts/StakingPoolManager.json';
 import { StakingPoolABI } from '../../utils/StakingPoolABI';
-import { getTokenInfo, getLiquidityPools } from '../../utils/Helper';
+import { getTokenInfo, getLiquidityPools } from '../../utils/Helpers';
 
 const ListStakingPools = () => {
   const theme = useTheme();

@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import { StakingPoolABI } from '../../utils/StakingPoolABI';
 import { ERC20ABI } from '../../utils/ERC20ABI';
 import { toast } from 'react-toastify';
-import { getTokenInfo, toString } from '../../utils/Helper';
+import { getTokenInfo, toString } from '../../utils/Helpers';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const SupplyStakingReward = () => {

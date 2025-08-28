@@ -9,7 +9,7 @@ import TokenSelectModal from '../../components/TokenSelectModal';
 import { ethers } from 'ethers';
 import ManagerAddress from '../../contracts/StakingPoolManager-address.json';
 import ManagerABI from '../../contracts/StakingPoolManager.json';
-import { toString } from '../../utils/Helper';
+import { toString } from '../../utils/Helpers';
 
 const CreateStakingPool = () => {
   const navigate = useNavigate();
