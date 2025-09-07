@@ -982,6 +982,244 @@
       "artifacts": [
         "StakingPoolManager"
       ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/PriceOracle.sol": {
+      "lastModificationDate": 1757109615641,
+      "contentHash": "7a4906bdaac2485d24571c25bbfc8645",
+      "sourceName": "src/backend/contracts/PriceOracle.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IAMMRouter.sol",
+        "./libraries/Helper.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PriceOracle"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/AssetPool.sol": {
+      "lastModificationDate": 1757109692689,
+      "contentHash": "638494cb631b954911c5fc7ebe81296f",
+      "sourceName": "src/backend/contracts/AssetPool.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "./interfaces/IAssetPool.sol",
+        "./PoolConfiguration.sol",
+        "./AssetPoolShare.sol",
+        "./AssetPoolShareDeployer.sol",
+        "./PriceOracle.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AssetPool"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/interfaces/IAssetPool.sol": {
+      "lastModificationDate": 1756935761304,
+      "contentHash": "934df61570df9bc41ffb0099aa94fac6",
+      "sourceName": "src/backend/contracts/interfaces/IAssetPool.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IAssetPool"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/PoolConfiguration.sol": {
+      "lastModificationDate": 1756931069399,
+      "contentHash": "5971c9df74c28e03c1a387d2881fcf79",
+      "sourceName": "src/backend/contracts/PoolConfiguration.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PoolConfiguration"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/AssetPoolShare.sol": {
+      "lastModificationDate": 1756935611008,
+      "contentHash": "e7b3b544ae779c0846dd08d6f982b77b",
+      "sourceName": "src/backend/contracts/AssetPoolShare.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./interfaces/IAssetPool.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AssetPoolShare"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/AssetPoolShareDeployer.sol": {
+      "lastModificationDate": 1757085905074,
+      "contentHash": "fca32063c376bfa067956a666ac13686",
+      "sourceName": "src/backend/contracts/AssetPoolShareDeployer.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "./interfaces/IAssetPool.sol",
+        "./AssetPoolShare.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AssetPoolShareDeployer"
+      ]
     }
   }
 }
