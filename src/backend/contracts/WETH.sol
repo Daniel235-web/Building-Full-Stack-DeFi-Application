@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: GPL3
+// SPDX-License-Identifier: GPL3
 pragma solidity ^0.8.0;
 
 contract WETH {
@@ -23,7 +23,7 @@ contract WETH {
         emit Deposit(msg.sender, msg.value);
     }
 
-    function withdrawal(uint256 wad) public {
+    function withdraw(uint256 wad) public {
         require(balanceOf[msg.sender] >= wad);
         balanceOf[msg.sender] -= wad;
         payable(msg.sender).transfer(wad);
@@ -50,15 +50,19 @@ contract WETH {
         uint256 wad
     ) public returns (bool) {
         require(balanceOf[src] >= wad);
+
         if (
             src != msg.sender && allowance[src][msg.sender] != type(uint256).max
         ) {
             require(allowance[src][msg.sender] >= wad);
             allowance[src][msg.sender] -= wad;
         }
+
         balanceOf[src] -= wad;
         balanceOf[dst] += wad;
+
         emit Transfer(src, dst, wad);
+
         return true;
     }
 }

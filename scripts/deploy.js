@@ -1,4 +1,4 @@
-// I require the Hardhat Runtime Environment explicitly here. This is optional
+// We require the Hardhat Runtime Environment explicitly here. This is optional
 // but useful for running the script in a standalone fashion through `node <script>`.
 //
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
@@ -21,7 +21,7 @@ async function main() {
     ["AMM Router", "AMMRouter"],
     ["Staking Pool Manager", "StakingPoolManager"],
     ["Asset Pool Share Deployer", "AssetPoolShareDeployer"],
-    ["Price Oracle", "PriceOracle"],
+    ["Price Oracle v2", "PriceOracleV2"],
     ["Pool Configuration", "PoolConfiguration"],
     ["Asset Pool", "AssetPool"],
   ];
@@ -52,8 +52,8 @@ async function main() {
       case "AssetPoolShareDeployer":
         shareDeployer = contract = await contractFactory.deploy();
         break;
-      case "PriceOracle":
-        priceOracle = contract = await contractFactory.deploy(ammRouter.address, wethToken.address);
+      case "PriceOracleV2":
+        priceOracle = contract = await contractFactory.deploy(pairFactory.address, wethToken.address, 60, 5);
         break;
       case "AssetPool":
         assetPool = contract = await contractFactory.deploy(shareDeployer.address, priceOracle.address);
@@ -118,7 +118,7 @@ function saveContractToFrontend(contract, name) {
   );
 }
 
-// I recommend this pattern to be able to use async/await everywhere
+// We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
   console.error(error);

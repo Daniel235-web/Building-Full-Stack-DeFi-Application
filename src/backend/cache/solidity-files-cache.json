@@ -6,12 +6,11 @@
       "contentHash": "2ca02810593bdecfddcda214920419ca",
       "sourceName": "src/backend/contracts/SimpleDeFiToken.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -45,12 +44,11 @@
       "contentHash": "681c532e816169606d13a5fe8b475074",
       "sourceName": "hardhat/console.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -81,12 +79,11 @@
       "contentHash": "3ae5166c6827a9cf1a7a462d1632b464",
       "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -121,12 +118,11 @@
       "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
       "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -157,12 +153,11 @@
       "contentHash": "f07feb4a44b1a4872370da5aa70e8e46",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -193,12 +188,11 @@
       "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
       "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -231,12 +225,11 @@
       "contentHash": "3ebb3cb5422a10742e6749f8c320a196",
       "sourceName": "src/backend/contracts/PairFactory.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -272,12 +265,11 @@
       "contentHash": "1adeb44ba97e449c52a6a48d2988bdda",
       "sourceName": "src/backend/contracts/interfaces/IPairFactory.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -308,12 +300,11 @@
       "contentHash": "7d718d2fe8f7706deadca9cd61e1e5e8",
       "sourceName": "src/backend/contracts/libraries/Helper.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -340,16 +331,15 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/TokenPair.sol": {
-      "lastModificationDate": 1751119236345,
-      "contentHash": "53918c2d7f4c6f90986b743fd76f990c",
+      "lastModificationDate": 1757274217348,
+      "contentHash": "dad3ef6016718e4eb9a7425e0b9f786e",
       "sourceName": "src/backend/contracts/TokenPair.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -372,7 +362,8 @@
         "@openzeppelin/contracts/security/ReentrancyGuard.sol",
         "@openzeppelin/contracts/utils/math/Math.sol",
         "./interfaces/ITokenPair.sol",
-        "./interfaces/IPairFactory.sol"
+        "./interfaces/IPairFactory.sol",
+        "./libraries/UQ112x112.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -386,12 +377,11 @@
       "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -420,16 +410,15 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/interfaces/ITokenPair.sol": {
-      "lastModificationDate": 1751119220534,
-      "contentHash": "133902f326b8e5a0442f919b73897d29",
+      "lastModificationDate": 1757274025821,
+      "contentHash": "d357e0ea94e26fb0568f41af7e323fed",
       "sourceName": "src/backend/contracts/interfaces/ITokenPair.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -460,12 +449,11 @@
       "contentHash": "1535f8c0c68463f8c1b5239f7584e71f",
       "sourceName": "@openzeppelin/contracts/security/ReentrancyGuard.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -496,12 +484,11 @@
       "contentHash": "fe63409d8a06818b926cf89e0ea88b1b",
       "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -532,12 +519,11 @@
       "contentHash": "053a6cf44a98092026dac8e12f7d8907",
       "sourceName": "src/backend/contracts/interfaces/IAMMRouter.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -568,12 +554,11 @@
       "contentHash": "3f90aad130e76c9e3c54c304d6d580e7",
       "sourceName": "src/backend/contracts/MemeToken.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -606,12 +591,11 @@
       "contentHash": "443b1dd99747758239a540c36bcaed29",
       "sourceName": "src/backend/contracts/AMMRouter.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -648,12 +632,11 @@
       "contentHash": "c578f4c52b84444482e04e1fbb53c1bd",
       "sourceName": "src/backend/contracts/FooToken.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -686,12 +669,11 @@
       "contentHash": "e0662f0284ec1acebe5919e8a8050962",
       "sourceName": "src/backend/contracts/BarToken.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -724,12 +706,11 @@
       "contentHash": "27fd0755199fcaff38097dea90ac0fed",
       "sourceName": "src/backend/contracts/interfaces/IWETH.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -756,16 +737,15 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/WETH.sol": {
-      "lastModificationDate": 1755456587496,
-      "contentHash": "5be868cb4b66417e56409d444f9e9bcd",
+      "lastModificationDate": 1757368827517,
+      "contentHash": "77a5a794f9ffdde68b0132cfbd82901d",
       "sourceName": "src/backend/contracts/WETH.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -796,12 +776,11 @@
       "contentHash": "1b5d667d3740d866eca0352758e59827",
       "sourceName": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -836,12 +815,11 @@
       "contentHash": "211ffd288c1588ba8c10eae668ca3c66",
       "sourceName": "@openzeppelin/contracts/utils/Address.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -872,12 +850,11 @@
       "contentHash": "525fcdad8d171312933f47baf01d1ed8",
       "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -908,12 +885,11 @@
       "contentHash": "fa8b6c1c251cbaa733d7c475dbd8dd8f",
       "sourceName": "src/backend/contracts/StakingPool.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -949,12 +925,11 @@
       "contentHash": "9129a5262cef028a2b4d7dcfd99abd70",
       "sourceName": "src/backend/contracts/StakingPoolManager.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -984,16 +959,15 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/PriceOracle.sol": {
-      "lastModificationDate": 1757109615641,
-      "contentHash": "7a4906bdaac2485d24571c25bbfc8645",
+      "lastModificationDate": 1757367345881,
+      "contentHash": "e2722d7f0eb44728c6084a219f68ebd9",
       "sourceName": "src/backend/contracts/PriceOracle.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -1013,6 +987,7 @@
       },
       "imports": [
         "./interfaces/IAMMRouter.sol",
+        "./interfaces/IPriceOracle.sol",
         "./libraries/Helper.sol",
         "@openzeppelin/contracts/token/ERC20/ERC20.sol"
       ],
@@ -1024,16 +999,15 @@
       ]
     },
     "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/AssetPool.sol": {
-      "lastModificationDate": 1757109692689,
-      "contentHash": "638494cb631b954911c5fc7ebe81296f",
+      "lastModificationDate": 1757357094151,
+      "contentHash": "4ce1719953ead213329828b87ac3459a",
       "sourceName": "src/backend/contracts/AssetPool.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -1057,10 +1031,10 @@
         "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
         "./interfaces/IAssetPool.sol",
+        "./interfaces/IPriceOracle.sol",
         "./PoolConfiguration.sol",
         "./AssetPoolShare.sol",
-        "./AssetPoolShareDeployer.sol",
-        "./PriceOracle.sol"
+        "./AssetPoolShareDeployer.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -1074,12 +1048,11 @@
       "contentHash": "934df61570df9bc41ffb0099aa94fac6",
       "sourceName": "src/backend/contracts/interfaces/IAssetPool.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -1110,12 +1083,11 @@
       "contentHash": "5971c9df74c28e03c1a387d2881fcf79",
       "sourceName": "src/backend/contracts/PoolConfiguration.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -1146,12 +1118,11 @@
       "contentHash": "e7b3b544ae779c0846dd08d6f982b77b",
       "sourceName": "src/backend/contracts/AssetPoolShare.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -1186,12 +1157,11 @@
       "contentHash": "fca32063c376bfa067956a666ac13686",
       "sourceName": "src/backend/contracts/AssetPoolShareDeployer.sol",
       "solcConfig": {
-        "version": "0.8.28",
+        "version": "0.8.17",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1000
           },
           "outputSelection": {
             "*": {
@@ -1219,6 +1189,118 @@
       ],
       "artifacts": [
         "AssetPoolShareDeployer"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/libraries/UQ112x112.sol": {
+      "lastModificationDate": 1757274396569,
+      "contentHash": "b61e8165b403fabba6e9461e61e686a3",
+      "sourceName": "src/backend/contracts/libraries/UQ112x112.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UQ112x112"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/interfaces/IPriceOracle.sol": {
+      "lastModificationDate": 1757356421692,
+      "contentHash": "f550c06635e3447a53bb5e4ff510f553",
+      "sourceName": "src/backend/contracts/interfaces/IPriceOracle.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IPriceOracle"
+      ]
+    },
+    "/home/emmanuel/Building-Full-Stack-DeFi-Application/defi/src/backend/contracts/PriceOracleV2.sol": {
+      "lastModificationDate": 1757357019290,
+      "contentHash": "01bdafa3358d9b8fe002a93de34f10c1",
+      "sourceName": "src/backend/contracts/PriceOracleV2.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IAMMRouter.sol",
+        "./interfaces/IPriceOracle.sol",
+        "./interfaces/IPairFactory.sol",
+        "./interfaces/ITokenPair.sol",
+        "./libraries/UQ112x112.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PriceOracleV2"
       ]
     }
   }

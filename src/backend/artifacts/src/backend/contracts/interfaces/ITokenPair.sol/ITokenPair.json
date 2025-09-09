@@ -107,15 +107,15 @@
       "inputs": [
         {
           "indexed": false,
-          "internalType": "uint256",
+          "internalType": "uint112",
           "name": "reserveA",
-          "type": "uint256"
+          "type": "uint112"
         },
         {
           "indexed": false,
-          "internalType": "uint256",
+          "internalType": "uint112",
           "name": "reserveB",
-          "type": "uint256"
+          "type": "uint112"
         }
       ],
       "name": "Sync",
@@ -163,19 +163,19 @@
       "name": "getReserves",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "uint112",
           "name": "reserveA",
-          "type": "uint256"
+          "type": "uint112"
         },
         {
-          "internalType": "uint256",
+          "internalType": "uint112",
           "name": "reserveB",
-          "type": "uint256"
+          "type": "uint112"
         },
         {
-          "internalType": "uint256",
+          "internalType": "uint32",
           "name": "blockTimestampLast",
-          "type": "uint256"
+          "type": "uint32"
         }
       ],
       "stateMutability": "view",
@@ -229,6 +229,32 @@
         }
       ],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "price0CumulativeLast",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "price1CumulativeLast",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
